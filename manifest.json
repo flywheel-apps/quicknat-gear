@@ -1,0 +1,52 @@
+{
+  "name": "quicknat-gear",
+  "label": "QuickNAT Pytorch",
+  "description": "Flywheel gear wrapper for QuickNAT_pytorch",
+  "author": "Flywheel",
+  "maintainer": "Flywheel <support@flywheel.io>",
+  "license": "Apache-2.0",
+  "url": "https://github.com/flywheel-apps/quicknat-gear",
+  "source": "https://github.com/ai-med/quickNAT_pytorch",
+  "cite": "Roy, A.G., Conjeti, S., Navab, N. and Wachinger, C., 2018. QuickNAT: Segmenting\nMRI Neuroanatomy in 20 seconds. arXiv:1801.04161",
+  "version": "0.0.3",
+  "custom": {
+    "docker-image": "flywheel/quicknat-gear:0.0.3",
+    "gear-builder": {
+      "category": "analysis",
+      "image": "flywheel/quicknat-gear:0.0.3"
+    }
+  },
+  "inputs": {
+    "T1W": {
+      "base": "file",
+      "description": "T1-Weighted MRI Image",
+      "optional": false,
+      "type": {
+        "enum": [
+          "nifti"
+        ]
+      }
+    },
+    "PyTorch_Model": {
+        "base": "file",
+        "description": "T1-Weighted MRI Image",
+        "optional": true
+    },
+    "FreeSurferLicense": {
+        "description": "FreeSurfer license.txt file",
+        "base": "file",
+        "optional": true
+      }
+  },
+  "config": {
+    "FREESURFER_LICENSE": {
+        "description": "FreeSurfer license as space-separated string.",
+        "type": "string",
+        "optional": true
+    }
+  },
+  "command": "/flywheel/v0/run.py",
+  "environment": {
+    "PYTHONPATH": "/opt/quickNAT_pytorch/"
+  }
+}
