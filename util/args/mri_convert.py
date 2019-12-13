@@ -6,7 +6,7 @@ def build(context):
     config = context.config
 
     params = OrderedDict()
-
+    # TODO: make the Output into a Subject-specific filename???
     params['T1W'] = context.get_input_path('T1W')
     params['Output'] = op.join(context.work_dir, 'Brain_Segmentation.nii.gz')
     

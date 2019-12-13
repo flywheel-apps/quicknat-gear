@@ -11,7 +11,7 @@ from quickNAT import Settings, evaluate_bulk
 
 import flywheel
 from util import gear_preliminaries
-from util.args import mri_convert
+from util.args import mri_convert, quick_NAT
 
 
 if __name__ == '__main__':
@@ -59,11 +59,9 @@ if __name__ == '__main__':
     
     # Prepare and run quickNAT Bulk Evaluation Routine
     try:
-        settings_eval = Settings('/opt/quickNAT_pytorch/settings_eval.ini')
-        if not context.gear_dict['dry-run']:
-            evaluate_bulk(settings_eval['EVAL_BULK'])
-        else:
-            print(os.listdir(context.work_dir))
+        quick_NAT.build(context)
+        quick_NAT.validate(context)
+        quick_NAT.exec(context)
     except Exception as e:
         context.log.exception(e)
         context.log.fatal('Error evaluating quickNAT pytorch!!!')

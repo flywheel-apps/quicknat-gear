@@ -27,9 +27,14 @@
         ]
       }
     },
-    "PyTorch_Model": {
+    "coronal_model_path": {
         "base": "file",
-        "description": "T1-Weighted MRI Image",
+        "description": "Pytorch model file trained to evaluate coronal slices through an image.",
+        "optional": true
+    },
+    "axial_model_path": {
+        "base": "file",
+        "description": "Pytorch model file trained to evaluate axial slices through an image.",
         "optional": true
     },
     "FreeSurferLicense": {
@@ -43,6 +48,28 @@
         "description": "FreeSurfer license as space-separated string.",
         "type": "string",
         "optional": true
+    },
+    "batch_size": {
+        "type": "integer",
+        "description": "Controls how many layers of an image get processed at once.  Higher numbers are possible with more memory.  A batch_size of 5 is used on a GPU with 12GB.",
+        "default": 32,
+        "maximum": 128,
+        "minimum": 5
+    },
+    "view_agg": {
+        "type":"boolean",
+        "default": false,
+        "description": "Aggregate predictions from Coronal and Axial Models."
+    },
+    "estimate_uncertainty": {
+        "type":"boolean",
+        "default": false,
+        "description": "Indicates if you want to estimate the structure-wise uncertainty for segmentation Quality control. Refer to \"Bayesian QuickNAT\" paper for more details."
+    },
+    "mc_samples": {
+        "type": "integer",
+        "description": "Active only if estimate_uncertainty flag is \"True\". Indicates the number of Monte-Carlo samples used for uncertainty estimation.",
+        "default": 10
     }
   },
   "command": "/flywheel/v0/run.py",

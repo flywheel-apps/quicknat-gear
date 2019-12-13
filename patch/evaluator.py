@@ -252,8 +252,8 @@ def evaluate(coronal_model_path, volumes_txt_file, data_dir, device, prediction_
     print("**Starting evaluation**")
     with open(volumes_txt_file) as file_handle:
         volumes_to_use = file_handle.read().splitlines()
-
-    
+    # TODO: make this flow better.  I want this to give an Exception if cuda is not found
+    # if device == 'cpu' then use cpu bindings.  That is what I want.
     cuda_available = torch.cuda.is_available()
     if cuda_available:
         model = torch.load(coronal_model_path)
@@ -261,8 +261,6 @@ def evaluate(coronal_model_path, volumes_txt_file, data_dir, device, prediction_
         model.cuda(device)
     else:
         model = torch.load(coronal_model_path, map_location=torch.device('cpu'))
-        if False: # torch.distributed.is_available():
-            model = torch.nn.parallel.DistributedDataParallel(model)
 
     model.eval()
 
@@ -300,7 +298,10 @@ def evaluate(coronal_model_path, volumes_txt_file, data_dir, device, prediction_
                 nifti_img = nib.Nifti1Image(volume_prediction, Mat, header=header)
                 print("Processed: " + volumes_to_use[vol_idx] + " " + str(vol_idx + 1) + " out of " + str(
                     len(file_paths)))
-                nib.save(nifti_img, os.path.join(prediction_path, volumes_to_use[vol_idx] + str('.nii')))
+                save_file = os.path.join(prediction_path, volumes_to_use[vol_idx])
+                if '.nii' not in save_file:
+                    save_file += '.nii.gz'
+                nib.save(nifti_img, save_file)
                 per_volume_dict = compute_volume(volume_prediction, label_names, volumes_to_use[vol_idx])
                 volume_dict_list.append(per_volume_dict)
             except FileNotFoundError:
