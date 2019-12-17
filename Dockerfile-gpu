@@ -1,7 +1,7 @@
 # Dockerfile exported by GearBuilderGUI. Stash edits before export again
 
 # Inheriting from established docker image:
-FROM ubuntu:xenial
+FROM nvidia/cuda:10.0-runtime
 
 # Inheriting from established docker image:
 LABEL maintainer="Flywheel <support@flywheel.io>"
@@ -72,26 +72,29 @@ ENV OS=Linux \
     PATH=/opt/freesurfer/bin:/opt/freesurfer/fsfast/bin:/opt/freesurfer/tktools:/opt/freesurfer/mni/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 
 # Install PIP Dependencies
-RUN pip3 install --upgrade pip && \ 
-    pip3.5 install \
+RUN pip3 install --upgrade pip setuptools && \ 
+    pip3.6 install \
     flywheel-sdk  \ 
     nibabel \
-    setuptools && \
-    pip3.5 install \
+    ipython \
+    setuptools \
     psutil && \ 
     rm -rf /root/.cache/pip
+
+COPY patch/ /opt/patch/
 
 # Clone the quickNAT_pytorch repo at commit 9adfd70caf69899432530e34f7aa0073d9bec61e
 # https://github.com/ai-med/quickNAT_pytorch/archive/9adfd70caf69899432530e34f7aa0073d9bec61e.zip
 RUN cd /opt/ && \
     git clone -n https://github.com/ai-med/quickNAT_pytorch.git && \
-    git checkout 9adfd70caf69899432530e34f7aa0073d9bec61e && \
     cd /opt/quickNAT_pytorch && \
-    pip install -r requirements.txt && \
+    git checkout 9adfd70caf69899432530e34f7aa0073d9bec61e && \
+    mv ../patch/evaluator.py utils/ && \
+    mv ../patch/run.py ./ && \
+    mv ../patch/requirements-gpu.txt ./ && \
+    pip3.6 install -r requirements-gpu.txt -f https://download.pytorch.org/whl/torch_stable.html && \ 
+    rm -rf /root/.cache/pip && \
     rm -rf .git
-
-# copy patch to ensure CPU compatibility
-COPY patch/evaluator.py /opt/quickNAT_pytorch/utils/
 
 # Specify ENV Variables
 ENV \ 

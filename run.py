@@ -7,8 +7,6 @@ import shutil
 import glob
 import logging
 
-from quickNAT import Settings, evaluate_bulk
-
 import flywheel
 from util import gear_preliminaries
 from util.args import mri_convert, quick_NAT

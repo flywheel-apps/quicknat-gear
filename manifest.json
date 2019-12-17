@@ -49,12 +49,25 @@
         "type": "string",
         "optional": true
     },
+    "device": {
+            "description": "Run on CPU or GPU hardware. GPU needs CUDA 8 or greater installed.",
+            "default": "CPU",
+            "type": "string",
+            "enum": ["GPU", "CPU"]
+    },       
+    "device_num": {
+        "type": "integer",
+        "description": "Selects which GPU to use. Only effective if GPU hardware selected and CUDA 8 or greater are installed.",
+        "default": 0,
+        "minimum": 0,
+        "maximum": 7
+    },
     "batch_size": {
         "type": "integer",
         "description": "Controls how many layers of an image get processed at once.  Higher numbers are possible with more memory.  A batch_size of 5 is used on a GPU with 12GB.",
         "default": 32,
         "maximum": 128,
-        "minimum": 5
+        "minimum": 2
     },
     "view_agg": {
         "type":"boolean",
