@@ -56,5 +56,5 @@ See Host and Container Requirements below:
 1. Cuda: v10.0
 2. CuDNN: installed with pytorch
 3. torch: 1.3.1+cu92 (minimum 1.0.0. See requirements-gpu.txt)
-4. torchvision==0.4.2 (minimum 0.2.0. See requirements-gpu.txt)
+4. torchvision: 0.4.2+cu92 (minimum 0.2.0. See requirements-gpu.txt)
 5. Python 3.6
