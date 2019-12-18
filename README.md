@@ -48,7 +48,7 @@ Unfortunately, the host requirements necessary for GPU execution are not yet ava
 
 Local execution must be done with sample data, a valid configuration file (config.json), and the following nvidia container runtime command:
 
-``nvidia-docker run --rm -v <local input directory>:<container input directory> -v <local config.json>:<container config.json> -v <local output directory>:<container output directory> -it <image id>``
+``nvidia-docker run --rm -v <local input directory>:<container input directory> -v <local config.json>:<container config.json> -v <local output directory>:<container output directory>  <image id> ./run.py``
 
 See Host and Container Requirements below:
 
