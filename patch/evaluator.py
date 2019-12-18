@@ -101,6 +101,7 @@ def evaluate_dice_score(model_path, num_classes, data_dir, label_dir, volumes_tx
     with open(volumes_txt_file) as file_handle:
         volumes_to_use = file_handle.read().splitlines()
 
+    cuda_available = torch.cuda.is_available()
     # First, are we attempting to run on a GPU?
     if type(device) == int:
         # if CUDA available, follow through, else warn and fallback to CPU
@@ -140,7 +141,7 @@ def evaluate_dice_score(model_path, num_classes, data_dir, label_dir, volumes_tx
             volume_prediction = []
             for i in range(0, len(volume), batch_size):
                 batch_x, batch_y = volume[i: i + batch_size], labelmap[i:i + batch_size]
-                if cuda_available:
+                if cuda_available and (type(device)==int):
                     batch_x = batch_x.cuda(device)
                 out = model(batch_x)
                 _, batch_output = torch.max(out, dim=1)
@@ -189,7 +190,7 @@ def _segment_vol(file_path, model, orientation, batch_size, cuda_available, devi
     volume_pred = []
     for i in range(0, len(volume), batch_size):
         batch_x = volume[i: i + batch_size]
-        if cuda_available:
+        if cuda_available and (type(device)==int):
             batch_x = batch_x.cuda(device)
         out = model(batch_x)
         # _, batch_output = torch.max(out, dim=1)
@@ -222,7 +223,7 @@ def _segment_vol_unc(file_path, model, orientation, batch_size, mc_samples, cuda
         volume_pred = []
         for i in range(0, len(volume), batch_size):
             batch_x = volume[i: i + batch_size]
-            if cuda_available:
+            if cuda_available and (type(device)==int):
                 batch_x = batch_x.cuda(device)
             out = model.predict(batch_x, enable_dropout=True, out_prob=True)
             # _, batch_output = torch.max(out, dim=1)
@@ -298,7 +299,7 @@ def evaluate(coronal_model_path, volumes_txt_file, data_dir, device, prediction_
     if (type(device)==str) or not cuda_available:
         model = torch.load(
             coronal_model_path, 
-            map_location=torch.device('device')
+            map_location=torch.device(device)
         )
 
     model.eval()

@@ -8,12 +8,12 @@
   "url": "https://github.com/flywheel-apps/quicknat-gear",
   "source": "https://github.com/ai-med/quickNAT_pytorch",
   "cite": "Roy, A.G., Conjeti, S., Navab, N. and Wachinger, C., 2018. QuickNAT: Segmenting\nMRI Neuroanatomy in 20 seconds. arXiv:1801.04161",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "custom": {
-    "docker-image": "flywheel/quicknat-gear:0.0.3",
+    "docker-image": "flywheel/quicknat-gear:0.1.0",
     "gear-builder": {
       "category": "analysis",
-      "image": "flywheel/quicknat-gear:0.0.3"
+      "image": "flywheel/quicknat-gear:0.1.0"
     }
   },
   "inputs": {
