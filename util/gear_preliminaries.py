@@ -54,9 +54,10 @@ def validate_config_against_manifest(context):
     """
     c_config = context.config
     manifest = context.gear_dict['manifest_json']
-    m_config = manifest['config']
+
     errors = []
     if 'config' in manifest.keys():
+        m_config = manifest['config']
         for key in m_config.keys():
             m_item = m_config[key]
             # Check if config value is optional

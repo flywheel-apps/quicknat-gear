@@ -3,8 +3,6 @@ from collections import OrderedDict
 from .common import build_command_list, exec_command
 
 def build(context):
-    config = context.config
-
     params = OrderedDict()
     # TODO: make the Output into a Subject-specific filename???
     params['T1W'] = context.get_input_path('T1W')
@@ -13,7 +11,9 @@ def build(context):
     context.gear_dict['params'] = params
 
 def validate(context):
-    pass
+    params = context.gear_dict['params']
+    if (not op.exists(params['T1W'])) or (not op.exists(context.work_dir)):
+        raise FileNotFoundError('File or directory missing.')
 
 def execute(context):
     command = ['mri_convert', '--conform']
